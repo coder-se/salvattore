@@ -562,6 +562,42 @@ self.registerGrid = function registerGrid (grid) {
   grids.push(grid);
 };
 
+self.unregisterGrid = function unregisterGrid (grid) {
+
+  // retrieve the list of items from the grid itself
+  var range = document.createRange();
+  range.selectNodeContents(grid);
+
+  var columns = Array.prototype.filter.call(range.extractContents().childNodes, function filter_elements(node) {
+    return node instanceof global.HTMLElement;
+  });
+
+  var numberOfColumns = columns.length
+    , numberOfRowsInFirstColumn = columns[0].childNodes.length
+    , sortedRows = new Array(numberOfRowsInFirstColumn * numberOfColumns)
+  ;
+
+  Array.prototype.forEach.call(columns, function iterate_columns(column, columnIndex) {
+    Array.prototype.forEach.call(column.children, function iterate_rows(row, rowIndex) {
+      sortedRows[rowIndex * numberOfColumns + columnIndex] = row;
+    });
+  });
+
+
+  sortedRows.filter(function filter_non_null(child) {
+    return !!child;
+  }).forEach(function append_row(child) {
+    grid.appendChild(child);
+  });
+
+  var idx = grids.indexOf(grid);
+  if(idx > -1) {
+    grids.splice(idx, 1);
+  }
+};
+
+
+
 
 self.init = function init() {
   // adds required CSS rule to hide 'content' based
@@ -585,6 +621,7 @@ return {
   appendElements: self.appendElements,
   prependElements: self.prependElements,
   registerGrid: self.registerGrid,
+  unregisterGrid: self.unregisterGrid,
   recreateColumns: self.recreateColumns,
   removeColumns: self.removeColumns,
   rescanMediaQueries: self.rescanMediaQueries,
@@ -594,8 +631,9 @@ return {
   append_elements: self.appendElements,
   prepend_elements: self.prependElements,
   register_grid: self.registerGrid,
+  unregister_grid: self.unregisterGrid,
   recreate_columns: self.recreateColumns,
-  remove_columns: self.remove_columns,
+  remove_columns: self.removeColumns,
   rescan_media_queries: self.rescanMediaQueries
 };
 
