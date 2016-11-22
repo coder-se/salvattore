@@ -586,6 +586,7 @@ return {
   prependElements: self.prependElements,
   registerGrid: self.registerGrid,
   recreateColumns: self.recreateColumns,
+  removeColumns: self.removeColumns,
   rescanMediaQueries: self.rescanMediaQueries,
   init: self.init,
 
@@ -594,6 +595,7 @@ return {
   prepend_elements: self.prependElements,
   register_grid: self.registerGrid,
   recreate_columns: self.recreateColumns,
+  remove_columns: self.remove_columns,
   rescan_media_queries: self.rescanMediaQueries
 };
 
